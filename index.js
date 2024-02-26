@@ -20,13 +20,16 @@ newBookButton.addEventListener("click", () => {
   displayBooks();
 });
 
-function Book(title, author, pages, haveRead) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.haveRead = haveRead;
+class Book {
 
-  this.info = () => {
+  constructor(title, author, pages, haveRead) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.haveRead = haveRead;
+  }
+
+  get info() {
     return `"${this.title}" by "${this.author}", ${this.pages} pages, ${
       this.haveRead ? "have read" : "not read yet"
     }`;
@@ -51,6 +54,7 @@ function displayBooks() {
   bookList.innerHTML = "";
 
   myLibrary.forEach(book => {
+    const { title, author, pages, haveRead } = book;
     const bookCard = document.createElement("div");
     bookCard.classList.add("book");
 
@@ -58,22 +62,22 @@ function displayBooks() {
     bookInfo.classList.add("book-info");
 
     const bookTitle = document.createElement("h2");
-    bookTitle.textContent = book.title;
+    bookTitle.textContent = title;
 
     const bookDetails = document.createElement("div");
     bookDetails.classList.add("details");
 
     const bookAuthor = document.createElement("p");
-    bookAuthor.textContent = book.author;
+    bookAuthor.textContent = author;
 
     const bookPages = document.createElement("p");
-    bookPages.textContent = `${book.pages} pages`;
+    bookPages.textContent = `${pages} pages`;
 
-    const haveRead = document.createElement("button");
-    haveRead.textContent = book.haveRead ? "Read" : "Not read";
-    haveRead.classList.add("have-read");
-    haveRead.style.backgroundColor = book.haveRead ? "#36a336" : "#dc3545";
-    haveRead.addEventListener("click", () => {
+    const bookHaveRead = document.createElement("button");
+    bookHaveRead.textContent = haveRead ? "Read" : "Not read";
+    bookHaveRead.classList.add("have-read");
+    bookHaveRead.style.backgroundColor = haveRead ? "#36a336" : "#dc3545";
+    bookHaveRead.addEventListener("click", () => {
       toggleHaveRead(book);
     });
 
@@ -91,7 +95,7 @@ function displayBooks() {
     bookInfo.appendChild(bookDetails);
 
     bookCard.appendChild(bookInfo);
-    bookCard.appendChild(haveRead);
+    bookCard.appendChild(bookHaveRead);
     bookCard.appendChild(removeButton);
 
     bookList.appendChild(bookCard);
